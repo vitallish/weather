@@ -6,23 +6,38 @@
  * To change this template use File | Settings | File Templates.
  */
 
-document.getElementById('startDate').onchange=function(){
-    var date = this.value;
-    var dataString = "date="+date;
+function updateWthrStats(){
+    oSelData = document.getElementById('select_data');
+    oSelType = document.getElementById('select_type');
+    oSelHour = document.getElementById('select_hour');
+    oSelDay = document.getElementById('select_day');
 
-    $.ajax({
-        type:"POST",
-        url: 'http://localhost/weather/index.php/testpage/ajaxTest',
-        data:dataString,
-        success:function(result){
-            document.getElementById('ajaxTest').innerHTML = result;
-        },
-        error: function(){
-            alert('Site List was not loaded properly, please let Vitaly know!');
-        }
-    });
 
-};
+
+
+}
+if((oSelData = document.getElementById('select_data'))!=null){
+    oSelData.onchange=updateWthrStats;
+}
+if((oStartDate = document.getElementById('startDate'))!=null){
+    oStartDate.onchange=function(){
+        var date = this.value;
+        var dataString = "date="+date;
+
+        $.ajax({
+            type:"POST",
+            url: siteurl+'/testpage/ajaxTest',
+            data:dataString,
+            success:function(result){
+                document.getElementById('ajaxTest').innerHTML = result;
+            },
+            error: function(){
+                alert('Something has gone horribly wrong. Sorry.');
+            }
+        });
+
+    };
+}
 
 
 

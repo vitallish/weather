@@ -33,7 +33,7 @@ class Homepage extends CI_Controller {
 		$this->load->view('welcomeTom', $data);
 	
 	}
-	
+
 }
 
 /* End of file homepage.php */

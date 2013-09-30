@@ -42,10 +42,8 @@ class Testpage extends CI_Controller {
     public function ajaxTest(){
         $data = $this->input->post();
         print_r( $this->wu->aggDay($data['date']));
-
-
-
     }
+
 
 }
 

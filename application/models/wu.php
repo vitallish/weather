@@ -1,11 +1,16 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Wu extends CI_Model {
-
+    public $bLocalComp;
     function __construct()
     {
         // Call the Model constructor
         parent::__construct();
+       $this->load->helper('url');
+       $this->bLocalComp = FALSE;
+        if(strstr(base_url(),'localhost')){
+            $this->bLocalComp=TRUE;
+        }
     }
 
     function forecast10day($sJSON)
@@ -15,7 +20,9 @@ class Wu extends CI_Model {
             7am to simulate checking the forecast for the rest of the day in the morning
         */
         $o10day = json_decode($sJSON);
-        $data = array('raw_json'=>$sJSON);
+        if($this->bLocalComp){
+            $data = array('raw_json'=>$sJSON);
+        }
         $timezone = new DateTimeZone('America/New_York');
         for ($i=0;$i<10;$i++){
             $oForecastday = $o10day->{'forecast'}->{'simpleforecast'}->{'forecastday'}[$i];
@@ -31,7 +38,7 @@ class Wu extends CI_Model {
             $data['qpf_allday_in'] =$oForecastday->{'qpf_allday'}->{'in'};
             $data['snow_allday_in'] =$oForecastday->{'snow_allday'}->{'in'};
             $data['conditions'] = $oForecastday->{'conditions'};
-            if ($i==1){ //only write the raw json data to 1 day of the 10
+            if ($i==1&& $this->bLocalComp){ //only write the raw json data to 1 day of the 10
                 $data['raw_json']='';
             }
 
@@ -55,7 +62,9 @@ class Wu extends CI_Model {
             accurate right at the end of the hour.
         */
         $oHourly = json_decode($sJSON);
-        $data = array('raw_json'=>$sJSON);
+        if($this->bLocalComp){
+            $data = array('raw_json'=>$sJSON);
+        }
         $timezone = new DateTimeZone('America/New_York');
 
         foreach( $oHourly->{'hourly_forecast'} as $hour=>$forecast){
@@ -70,7 +79,7 @@ class Wu extends CI_Model {
             $data['qpf'] = $forecast->{'qpf'}->{'english'};
             $data['snow'] = $forecast->{'snow'}->{'english'};
 
-            if ($hour == 1){ //only wite the raw json on the 0th hour
+            if ($hour == 1&&$this->bLocalComp){ //only wite the raw json on the 0th hour and on local comp
                 $data['raw_json']='';
             }
 
@@ -80,7 +89,9 @@ class Wu extends CI_Model {
     function conditions($sJSON)
     {
         $oConditions = json_decode($sJSON)->{'current_observation'};
-        $data = array('raw_json'=>$sJSON);
+        if($this->bLocalComp){
+            $data = array('raw_json'=>$sJSON);
+        }
         $timezone = new DateTimeZone('America/New_York');
         $dt = date_create_from_format('U',$oConditions->{'observation_epoch'},$timezone);
         //print_r('<pre>');
@@ -104,7 +115,7 @@ class Wu extends CI_Model {
         $aData['day']['temp']['low'] = 150;
         $aData['day']['count']=0; //total measurements made that day
         $aData['day']['percip']['count']=0;
-        $aData['hour']=[];
+
 
         $this->db->where('ref','wu_currentrain');
         $this->db->select('value');
@@ -158,6 +169,26 @@ class Wu extends CI_Model {
        $aDates = $oDates->result_array();
      // $nDates = $oDates->num_results();
        return($aDates);
+    }
+    function tempDifferenceDay($daysAdvance){
+        $query = 'SELECT AVG(ABS(diff_f_high)) AS mean_high, ';
+        $query.= 'STDDEV(ABS(diff_f_high)) AS sd_high, ';
+        $query.= 'AVG(ABS(diff_f_low)) AS mean_low, ';
+        $query.= 'STDDEV(ABS(diff_f_low)) AS sd_low ';
+        $query.= 'FROM wu_10day WHERE forecast_days='.$daysAdvance;
+
+        $temp =$this->db->query($query)->result_array();
+
+        foreach ($temp[0] as $key=>$val){
+            $round[$key]=round($val,1);
+        }
+
+       return $round;
+    }
+    function tempDifferenceHour($hourAdvance){
+        //need to set up the database
+
+
     }
 
 

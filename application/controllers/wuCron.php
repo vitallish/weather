@@ -81,6 +81,33 @@ class WuCron extends CI_Controller {
 				}
 			}
 		}
+    }
+        public function diff_36hour(){
+            $this->db->where("datetime < '".date('Y-m-d H:i:s')."' AND diff_f_low IS NULL");
+            $this->db->select('datetime');
+            $oQuery = $this->db->get('wu_hourly');
+            $aRepeat = array();
+            foreach($oQuery->result_array() as $row){
+                if(!in_array($row['datetime'],$aRepeat)){
+                    //print_r($row);
+                    $aRepeat[] = $row['date'];
+                    $aAggdate = $this->wu->aggDay($row['date']);
+                    //echo sizeof($aAggdate['hour']).' ';
+                    if($aAggdate && sizeof($aAggdate['hour'])==24){
+                        $sQuery = "UPDATE `wu_10day` ";
+                        $sQuery.="SET `diff_f_high` = (`f_high`-'".$aAggdate['day']['temp']['high']."'), ";
+                        $sQuery.="`diff_f_low` = (`f_low`-'".$aAggdate['day']['temp']['low']."')";
+                        $sQuery.="WHERE `date` = '".$row['date']."'";
+                        print_r('<pre>');
+                        print_r($aAggdate);
+                        $this->db->query($sQuery);
+                    }
+                }
+            }
+
+
+
+    }
 				
 				
 		
@@ -90,10 +117,7 @@ class WuCron extends CI_Controller {
 		//print_r($oQuery->result_array());
 		
 		
-	
-	
-	
-	}
+
 	
 }
 

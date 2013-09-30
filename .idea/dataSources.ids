@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="dataSourceStorage">
+  <data-source source="LOCAL" name="Data Source" product="MySQL" version="5.5.27" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.26 ( Revision: ${bzr.revision-id} )" uuid="88e7fa5b-87d1-4eab-bb97-043447d8cc09">
+    <extra-name-characters>#@</extra-name-characters>
+    <identifier-quote-string>`</identifier-quote-string>
+    <synchronize>true</synchronize>
+    <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
+    <jdbc-url>jdbc:mysql://localhost/weather</jdbc-url>
+    <user-name>root</user-name>
+    <user-password>df9edfd9dfc2dfc3dfd0dfd0dfc6dfcf</user-password>
+    <schema-pattern>weather.*</schema-pattern>
+    <default-schemas>weather.*</default-schemas>
+    <libraries>
+      <library>
+        <url>jar://$APPLICATION_HOME_DIR$/datasources/mysql-connector-java-5.1.26-bin.jar!/</url>
+      </library>
+      <library>
+        <url>file://$APPLICATION_HOME_DIR$/datasources/mysql-connector-license.txt</url>
+      </library>
+    </libraries>
+    <schema name="" catalog="weather"/>
+    <table name="constants" schema="" catalog="weather" type="TABLE">
+      <column name="id" sqlType="INT UNSIGNED" length="10" precision="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="ref" sqlType="VARCHAR" length="16" precision="0" nullable="false" jdbcType="12"/>
+      <column name="value" sqlType="TEXT" length="65535" precision="0" nullable="false" jdbcType="-1"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="wu_10day" schema="" catalog="weather" type="TABLE">
+      <column name="id" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="date" sqlType="DATE" length="10" precision="0" nullable="false" jdbcType="91"/>
+      <column name="forecast_days" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4" remarks="ZGF5cyBpbiBhZHZhbmNlIGZvcmVjYXN0"/>
+      <column name="f_high" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4"/>
+      <column name="f_low" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4"/>
+      <column name="pop" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4"/>
+      <column name="qpf_allday_in" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4"/>
+      <column name="snow_allday_in" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4"/>
+      <column name="conditions" sqlType="VARCHAR" length="64" precision="0" nullable="false" jdbcType="12"/>
+      <column name="timestamp" sqlType="TIMESTAMP" length="19" precision="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA=" version="true"/>
+      <column name="raw_json" sqlType="TEXT" length="65535" precision="0" nullable="false" jdbcType="-1"/>
+      <column name="diff_f_high" sqlType="FLOAT" length="12" precision="0" nullable="true" jdbcType="7"/>
+      <column name="diff_f_low" sqlType="FLOAT" length="12" precision="0" nullable="true" jdbcType="7"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="wu_current" schema="" catalog="weather" type="TABLE">
+      <column name="id" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="datetime" sqlType="DATETIME" length="19" precision="0" nullable="false" jdbcType="93"/>
+      <column name="f_temp" sqlType="DECIMAL" length="3" precision="1" nullable="false" jdbcType="3"/>
+      <column name="weather" sqlType="VARCHAR" length="64" precision="0" nullable="false" jdbcType="12"/>
+      <column name="precip_today_in" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4"/>
+      <column name="raw_json" sqlType="TEXT" length="65535" precision="0" nullable="false" jdbcType="-1"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="wu_hourly" schema="" catalog="weather" type="TABLE">
+      <column name="id" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="datetime" sqlType="DATETIME" length="19" precision="0" nullable="false" jdbcType="93"/>
+      <column name="forecast_hours" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4"/>
+      <column name="f_temp" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4"/>
+      <column name="condition" sqlType="VARCHAR" length="64" precision="0" nullable="false" jdbcType="12"/>
+      <column name="pop" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4"/>
+      <column name="qpf" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4"/>
+      <column name="snow" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4"/>
+      <column name="raw_json" sqlType="TEXT" length="65535" precision="0" nullable="false" jdbcType="-1"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+  </data-source>
+</component>
