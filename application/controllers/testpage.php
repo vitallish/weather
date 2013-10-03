@@ -43,7 +43,11 @@ class Testpage extends CI_Controller {
         $data = $this->input->post();
         print_r( $this->wu->aggDay($data['date']));
     }
+    public  function aDate(){
+        print_r($this->wu->aggDay('2013-07-11'));
 
+
+    }
 
 }
 

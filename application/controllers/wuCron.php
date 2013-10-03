@@ -83,24 +83,34 @@ class WuCron extends CI_Controller {
 		}
     }
         public function diff_36hour(){
-            $this->db->where("datetime < '".date('Y-m-d H:i:s')."' AND diff_f_low IS NULL");
-            $this->db->select('datetime');
+            //find all datetimes which have been predicted
+            $this->db->where("datetime < '".date('Y-m-d H:i:s')."' AND diff_f_temp IS NULL");
+
+            $this->db->select('id,datetime');
             $oQuery = $this->db->get('wu_hourly');
             $aRepeat = array();
+            $timezone = new DateTimeZone('America/New_York');
+
             foreach($oQuery->result_array() as $row){
                 if(!in_array($row['datetime'],$aRepeat)){
                     //print_r($row);
-                    $aRepeat[] = $row['date'];
-                    $aAggdate = $this->wu->aggDay($row['date']);
+                    $aRepeat[] = $row['datetime'];
+                    $iDateTime = strtotime($row['datetime']);
+                    $dt = date_create_from_format('U',$iDateTime,$timezone);
+                    //print_r($dt);
+                    $dt = date_timezone_set($dt,$timezone);
+                    $sCurrentDate = date_format($dt,'Y-m-d');
+                    $iCurrentTime = (int)date_format($dt,'H');
+                    //print_r($dt);
+                    $aAggdate = $this->wu->aggDay($sCurrentDate);
                     //echo sizeof($aAggdate['hour']).' ';
-                    if($aAggdate && sizeof($aAggdate['hour'])==24){
-                        $sQuery = "UPDATE `wu_10day` ";
-                        $sQuery.="SET `diff_f_high` = (`f_high`-'".$aAggdate['day']['temp']['high']."'), ";
-                        $sQuery.="`diff_f_low` = (`f_low`-'".$aAggdate['day']['temp']['low']."')";
-                        $sQuery.="WHERE `date` = '".$row['date']."'";
-                        print_r('<pre>');
-                        print_r($aAggdate);
+                    if($aAggdate && array_key_exists($iCurrentTime,$aAggdate['hour']) && $aAggdate['hour'][$iCurrentTime]['count']>1){
+                        $nRealTemp = $aAggdate['hour'][$iCurrentTime]['temp'];
+                        $sQuery = "UPDATE `wu_hourly` ";
+                        $sQuery.="SET `diff_f_temp` = (`f_temp`-'".$nRealTemp."') ";
+                        $sQuery.="WHERE `id` = '".$row['id']."'";
                         $this->db->query($sQuery);
+                        print_r("id = ".$row['id']."<br>");
                     }
                 }
             }

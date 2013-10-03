@@ -121,7 +121,7 @@ class Wu extends CI_Model {
         $this->db->select('value');
         $sPercip = $this->db->get('constants')->row()->value;
         $aPercip = explode(",",$sPercip);
-
+        $aData['hour']=array();
 
         if($oQuery->num_rows()>0){
             $timezone = new DateTimeZone('America/New_York');
