@@ -6,8 +6,8 @@ class Wu extends CI_Model {
     {
         // Call the Model constructor
         parent::__construct();
-       $this->load->helper('url');
-       $this->bLocalComp = FALSE;
+        $this->load->helper('url');
+        $this->bLocalComp = FALSE;
         if(strstr(base_url(),'localhost')){
             $this->bLocalComp=TRUE;
         }
@@ -165,10 +165,10 @@ class Wu extends CI_Model {
     function allCurrentDays(){
         /*
         */
-       $oDates = $this->db->query("SELECT DATE(`datetime`) AS 'dates' FROM `wu_current` GROUP BY DATE(`datetime`) ORDER BY `datetime`");
-       $aDates = $oDates->result_array();
-     // $nDates = $oDates->num_results();
-       return($aDates);
+        $oDates = $this->db->query("SELECT DATE(`datetime`) AS 'dates' FROM `wu_current` GROUP BY DATE(`datetime`) ORDER BY `datetime`");
+        $aDates = $oDates->result_array();
+        // $nDates = $oDates->num_results();
+        return($aDates);
     }
     function tempDifferenceDay($daysAdvance){
         $query = 'SELECT AVG(ABS(diff_f_high)) AS mean_high, ';
@@ -183,13 +183,43 @@ class Wu extends CI_Model {
             $round[$key]=round($val,1);
         }
 
-       return $round;
+        return $round;
     }
-    function tempDifferenceHour($hourAdvance){
-        //need to set up the database
+    function tempDifferenceHour($hoursAdvance){
+
+        $query = 'SELECT AVG(ABS(diff_f_temp)) AS mean_diff, ';
+        $query.= 'STDDEV(ABS(diff_f_temp)) AS sd_diff ';
+        $query.= 'FROM wu_hourly WHERE forecast_hours='.$hoursAdvance;
+
+        $temp =$this->db->query($query)->result_array();
+
+        foreach ($temp[0] as $key=>$val){
+            $round[$key]=round($val,1);
+        }
+        return $round;
+    }
+    function percentPOPDay($daysAdvance,$pop){
+        $minPercent = 0.05;
 
 
+        $query = 'SELECT date ';
+        $query .= 'FROM wu_10day WHERE pop='.$pop.' AND forecast_days = '.$daysAdvance;
+        $temp =$this->db->query($query)->result_array();
+        $countRain=0;
+        $countTotal=0;
+        foreach ($temp as $date){
+            $aCurDate = $this->aggDay($date['date']);
+            $iPercentRain =$aCurDate['day']['percip']['count']/$aCurDate['day']['count'];
+            if($iPercentRain>$minPercent){
+                $countRain++;
+            }
+            $countTotal++;
+
+        }
+        return array($countRain/$countTotal,$countTotal);
     }
+
+
 
 
 }

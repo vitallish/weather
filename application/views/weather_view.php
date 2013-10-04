@@ -21,6 +21,7 @@
         echo $sel_data;
         ?>
     </div>
+
     <div>
 <!--Select the predicted pop-->
     </div>
