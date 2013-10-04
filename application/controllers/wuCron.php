@@ -10,6 +10,7 @@ class WuCron extends CI_Controller {
        {
             parent::__construct();
             $this->load->model('wu');
+           $this->load->helper('vitaly');
 			date_default_timezone_set('America/New_York');
 			
        }
@@ -89,18 +90,16 @@ class WuCron extends CI_Controller {
             $this->db->select('id,datetime');
             $oQuery = $this->db->get('wu_hourly');
             $aRepeat = array();
-            $timezone = new DateTimeZone('America/New_York');
+            //$timezone = new DateTimeZone('America/New_York');
 
             foreach($oQuery->result_array() as $row){
                 if(!in_array($row['datetime'],$aRepeat)){
                     //print_r($row);
                     $aRepeat[] = $row['datetime'];
-                    $iDateTime = strtotime($row['datetime']);
-                    $dt = date_create_from_format('U',$iDateTime,$timezone);
-                    //print_r($dt);
-                    $dt = date_timezone_set($dt,$timezone);
-                    $sCurrentDate = date_format($dt,'Y-m-d');
-                    $iCurrentTime = (int)date_format($dt,'H');
+                    $aDTbreak = dtBreak($row['datetime']);
+
+                    $sCurrentDate = $aDTbreak['date']['full'];
+                    $iCurrentTime = (int)$aDTbreak['time']['H'];
                     //print_r($dt);
                     $aAggdate = $this->wu->aggDay($sCurrentDate);
                     //echo sizeof($aAggdate['hour']).' ';

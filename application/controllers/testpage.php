@@ -7,6 +7,7 @@ class Testpage extends CI_Controller {
         $this->load->model('wu');
         $this->load->helper('form');
         $this->load->helper('url');
+        $this->load->helper('vitaly');
     }
 
     public function index()
@@ -61,7 +62,11 @@ class Testpage extends CI_Controller {
     }
     public function dailyPOP(){
         print_r('<pre>');
-        print_r($this->wu->percentPOPDay(2,30));
+        print_r($this->wu->percentPOPDay(2,10));
+    }
+    public function helpDatetime(){
+        print_r('<pre>');
+        print_r(dtBreak('2013-07-01 01:12:13'));
 
 
     }

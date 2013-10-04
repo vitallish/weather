@@ -201,23 +201,36 @@ class Wu extends CI_Model {
     function percentPOPDay($daysAdvance,$pop){
         $minPercent = 0.05;
 
-
         $query = 'SELECT date ';
         $query .= 'FROM wu_10day WHERE pop='.$pop.' AND forecast_days = '.$daysAdvance;
         $temp =$this->db->query($query)->result_array();
         $countRain=0;
+        $countAlmost = 0;
         $countTotal=0;
         foreach ($temp as $date){
             $aCurDate = $this->aggDay($date['date']);
-            $iPercentRain =$aCurDate['day']['percip']['count']/$aCurDate['day']['count'];
-            if($iPercentRain>$minPercent){
-                $countRain++;
+            if($aCurDate){
+                $iPercentRain =$aCurDate['day']['percip']['count']/$aCurDate['day']['count'];
+                if($iPercentRain>$minPercent){
+                    $countRain++; //count as a rainy day
+                }else if($iPercentRain>0){
+                    $countAlmost++; //not quite rainy enough
+                }
+                $countTotal++;
             }
-            $countTotal++;
 
         }
-        return array($countRain/$countTotal,$countTotal);
-    }
+
+        $aData = array('total' => $countTotal,
+                        'rain' => $countRain,
+                        'almost' => $countAlmost);
+
+        return $aData;
+    }function percentPOPhour($hoursAdvance,$pop){
+
+
+
+}
 
 
 
