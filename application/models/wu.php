@@ -202,7 +202,7 @@ class Wu extends CI_Model {
         $minPercent = 0.05;
 
         $query = 'SELECT date ';
-        $query .= 'FROM wu_10day WHERE pop='.$pop.' AND forecast_days = '.$daysAdvance;
+        $query .= 'FROM wu_10day WHERE pop='.$pop.' AND forecast_days='.$daysAdvance;
         $temp =$this->db->query($query)->result_array();
         $countRain=0;
         $countAlmost = 0;
@@ -226,7 +226,48 @@ class Wu extends CI_Model {
                         'almost' => $countAlmost);
 
         return $aData;
-    }function percentPOPhour($hoursAdvance,$pop){
+    }
+
+    function percentPOPhour($hoursAdvance,$pop){
+        $minPercent = 0.25;
+        //@todo the rain percentage has not been working in aggDate
+
+        $query = 'SELECT datetime ';
+        $query .= 'FROM wu_hourly WHERE pop='.$pop.' AND forecast_hours='.$hoursAdvance;
+        $temp =$this->db->query($query)->result_array();
+        $countRain=0;
+        $countAlmost = 0;
+        $countTotal=0;
+
+        foreach ($temp as $datetime){
+            $aFullDate= dtBreak($datetime['datetime']);
+
+            $aCurDate = $this->aggDay($aFullDate['date']['full']);
+            $aCurHour = (int)$aFullDate['time']['H'];
+            if($aCurDate&&array_key_exists($aCurHour,$aCurDate['hour'])){  //needed to make sure current day and hour exists in data
+
+                $iPercentRain = $aCurDate['hour'][$aCurHour]['percip']['count']/$aCurDate['hour'][$aCurHour]['count'];
+                print_r($iPercentRain);
+                print_r('<br>');
+                if($iPercentRain>$minPercent){
+                    $countRain++; //count as a rainy day
+                }else if($iPercentRain>0){
+                    $countAlmost++; //not quite rainy enough
+                }
+                $countTotal++;
+            }
+
+        }
+
+        $aData = array('total' => $countTotal,
+        'rain' => $countRain,
+        'almost' => $countAlmost,
+        'pop'   => $pop,
+        'query'=>$query,
+        'hoursAdvance'=> $hoursAdvance);
+
+
+        return $aData;
 
 
 

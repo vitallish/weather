@@ -64,6 +64,12 @@ class Testpage extends CI_Controller {
         print_r('<pre>');
         print_r($this->wu->percentPOPDay(2,10));
     }
+    public function hourlyPOP(){
+        print_r('<pre>');
+        print_r($this->wu->percentPOPHour(3,10));
+    }
+
+
     public function helpDatetime(){
         print_r('<pre>');
         print_r(dtBreak('2013-07-01 01:12:13'));
