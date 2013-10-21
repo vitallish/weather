@@ -1,133 +1,129 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class WuCron extends CI_Controller {
+class WuCron extends CI_Controller
+{
 
-	var $sWU_api = '087c8e632c757faf';
-	var $sLocation = 'NY/New_York';
-	
-	
-	public function __construct()
-       {
-            parent::__construct();
-            $this->load->model('wu');
-           $this->load->helper('vitaly');
-			date_default_timezone_set('America/New_York');
-			
-       }
-	   
-	public function index()
-	{
-		$this->forecast10day();
-		$this->hourly();
-		$this->conditions();
-	}
-	public function forecast10day()
-	{
-		$sWU_api = $this->sWU_api;
-		$sLocation = $this->sLocation;
-		$sWeather = 'forecast10day';
-		
-		$sJSON = file_get_contents("http://api.wunderground.com/api/".$sWU_api."/geolookup/".$sWeather."/q/".$sLocation.".json");
-		$this->wu->forecast10day($sJSON);	
-		
-		print_r('<pre>');
-		print_r($sJSON);
-	}
-	public function hourly()
-	{
-		$sWU_api = $this->sWU_api;
-		$sLocation = $this->sLocation;
-		$sWeather = 'hourly';
-		
-		$sJSON = file_get_contents("http://api.wunderground.com/api/".$sWU_api."/geolookup/".$sWeather."/q/".$sLocation.".json");
-		$this->wu->hourly($sJSON);
-	
-		print_r('<pre>');
-		print_r($sJSON);
-	}
-	
-	public function conditions()
-	{
-		$sWU_api = $this->sWU_api;
-		$sLocation = $this->sLocation;
-		
-		$sWeather = 'conditions';
-		$sJSON = file_get_contents("http://api.wunderground.com/api/".$sWU_api."/geolookup/".$sWeather."/q/".$sLocation.".json");
-		$this->wu->conditions($sJSON);
-	
-		print_r('<pre>');
-		print_r($sJSON);
-	}
-	public function diff_10day()
-	{
-		
-		$this->db->where("date < '".date('Y-m-d')."' AND diff_f_low IS NULL");
-		$this->db->select('date');
-		$oQuery = $this->db->get('wu_10day');
-		$aRepeat = array();
-		foreach($oQuery->result_array() as $row){
-			if(!in_array($row['date'],$aRepeat)){
-				//print_r($row);
-				$aRepeat[] = $row['date'];
-				$aAggdate = $this->wu->aggDay($row['date']);
-				//echo sizeof($aAggdate['hour']).' ';
-				if($aAggdate && sizeof($aAggdate['hour'])==24){
-					$sQuery = "UPDATE `wu_10day` ";
-					$sQuery.="SET `diff_f_high` = (`f_high`-'".$aAggdate['day']['temp']['high']."'), "; 
-					$sQuery.="`diff_f_low` = (`f_low`-'".$aAggdate['day']['temp']['low']."')";
-					$sQuery.="WHERE `date` = '".$row['date']."'";
-					print_r('<pre>');
-					print_r($aAggdate);
-					$this->db->query($sQuery);
-				}
-			}
-		}
+    var $sWU_api = '087c8e632c757faf';
+    var $sLocation = 'NY/New_York';
+
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->load->model('wu');
+        $this->load->helper('vitaly');
+        date_default_timezone_set('America/New_York');
+
     }
-        public function diff_36hour(){
-            //find all datetimes which have been predicted
-            $this->db->where("datetime < '".date('Y-m-d H:i:s')."' AND diff_f_temp IS NULL");
 
-            $this->db->select('id,datetime');
-            $oQuery = $this->db->get('wu_hourly');
-            $aRepeat = array();
-            //$timezone = new DateTimeZone('America/New_York');
+    public function index()
+    {
+        $this->forecast10day();
+        $this->hourly();
+        $this->conditions();
+    }
 
-            foreach($oQuery->result_array() as $row){
-                if(!in_array($row['datetime'],$aRepeat)){
-                    //print_r($row);
-                    $aRepeat[] = $row['datetime'];
-                    $aDTbreak = dtBreak($row['datetime']);
+    public function forecast10day()
+    {
+        $sWU_api = $this->sWU_api;
+        $sLocation = $this->sLocation;
+        $sWeather = 'forecast10day';
 
-                    $sCurrentDate = $aDTbreak['date']['full'];
-                    $iCurrentTime = (int)$aDTbreak['time']['H'];
-                    //print_r($dt);
-                    $aAggdate = $this->wu->aggDay($sCurrentDate);
-                    //echo sizeof($aAggdate['hour']).' ';
-                    if($aAggdate && array_key_exists($iCurrentTime,$aAggdate['hour']) && $aAggdate['hour'][$iCurrentTime]['count']>1){
-                        $nRealTemp = $aAggdate['hour'][$iCurrentTime]['temp'];
-                        $sQuery = "UPDATE `wu_hourly` ";
-                        $sQuery.="SET `diff_f_temp` = (`f_temp`-'".$nRealTemp."') ";
-                        $sQuery.="WHERE `id` = '".$row['id']."'";
-                        $this->db->query($sQuery);
-                        print_r("id = ".$row['id']."<br>");
-                    }
-                }
+        $sJSON = file_get_contents("http://api.wunderground.com/api/" . $sWU_api . "/geolookup/" . $sWeather . "/q/" . $sLocation . ".json");
+        $this->wu->forecast10day($sJSON);
+
+        print_r('<pre>');
+        print_r($sJSON);
+    }
+
+    public function hourly()
+    {
+        $sWU_api = $this->sWU_api;
+        $sLocation = $this->sLocation;
+        $sWeather = 'hourly';
+
+        $sJSON = file_get_contents("http://api.wunderground.com/api/" . $sWU_api . "/geolookup/" . $sWeather . "/q/" . $sLocation . ".json");
+        $this->wu->hourly($sJSON);
+
+        print_r('<pre>');
+        print_r($sJSON);
+    }
+
+    public function conditions()
+    {
+        $sWU_api = $this->sWU_api;
+        $sLocation = $this->sLocation;
+
+        $sWeather = 'conditions';
+        $sJSON = file_get_contents("http://api.wunderground.com/api/" . $sWU_api . "/geolookup/" . $sWeather . "/q/" . $sLocation . ".json");
+        $this->wu->conditions($sJSON);
+
+        print_r('<pre>');
+        print_r($sJSON);
+    }
+
+    public function diff_10day()
+    {
+        //select where POP or temp or actual ids is null
+        // call proper functions to write it all to DB, one for IDs, one for diff, one for POP
+        //goal to combine aggdate to one call for each of the three updateables.
+
+        $this->db->where("date < '" . date('Y-m-d') . "' AND (diff_f_low IS NULL OR actual_ids IS NULL OR percent_pop IS NULL)");
+        $this->db->select('date,diff_f_low,actual_ids,percent_pop');
+        $oQuery = $this->db->get('wu_10day');
+        /* $aRepeat helps keep track of which dates have already been looked at since they are repeated about 9 times
+           and the the query captures all of them in the first go.
+        */
+        $aRepeat = array();
+        foreach ($oQuery->result_array() as $row) {
+            if (!in_array($row['date'], $aRepeat)) {
+
+                $aRepeat[] = $row['date'];
+
+                $bDiff_f_low = ($row['diff_f_low'] === NULL);
+                $bActual_ids = ($row['actual_ids'] === NULL);
+                $bPercent_pop = ($row['percent_pop'] === NULL);
+
+                $bCompute = array('diff_f_low' => $bDiff_f_low,
+                    'actual_ids' => $bActual_ids,
+                    'percent_pop' => $bPercent_pop,
+                    'check_complete' => TRUE);
+
+                $this->wu->update10day($row['date'], $bCompute);
             }
-
-
-
+        }
     }
-				
-				
-		
-		
-		
-		//print_r('<pre>');
-		//print_r($oQuery->result_array());
-		
-		
 
-	
+    public function diff_36hour()
+    {
+        //find all datetimes which have been predicted
+        $this->db->where("datetime < '" . date('Y-m-d H:i:s') . "' AND (diff_f_temp IS NULL OR actual_ids IS NULL OR percent_pop IS NULL)");
+
+        $this->db->select('datetime,diff_f_temp,actual_ids,percent_pop');
+        $oQuery = $this->db->get('wu_hourly');
+        $aRepeat = array();
+
+        foreach ($oQuery->result_array() as $key => $row) {
+            if ($key == 0) { //skip the first line because not all data is available.
+                continue;
+            }
+            if (!in_array($row['datetime'], $aRepeat)) {
+
+                $aRepeat[] = $row['datetime'];
+
+                $bDiff_f_temp = ($row['diff_f_temp'] === NULL);
+                $bActual_ids = ($row['actual_ids'] === NULL);
+                $bPercent_pop = ($row['percent_pop'] === NULL);
+
+                $bCompute = array('diff_f_temp' => $bDiff_f_temp,
+                    'actual_ids' => $bActual_ids,
+                    'percent_pop' => $bPercent_pop,
+                    'check_complete' => TRUE);
+
+                $this->wu->update36hour($row['datetime'], $bCompute);
+            }
+        }
+    }
 }
 
 /* End of file welcome.php */
