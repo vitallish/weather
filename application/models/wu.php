@@ -223,24 +223,22 @@ class Wu extends CI_Model
     {
         $minPercent = 0.05;
 
-        $query = 'SELECT date ';
+        $query = 'SELECT percent_pop ';
         $query .= 'FROM wu_10day WHERE pop=' . $pop . ' AND forecast_days=' . $daysAdvance;
         $temp = $this->db->query($query)->result_array();
         $countRain = 0;
         $countAlmost = 0;
         $countTotal = 0;
-        foreach ($temp as $date) {
-            $aCurDate = $this->aggDay($date['date']);
-            if ($aCurDate) {
-                $iPercentRain = $aCurDate['day']['percip']['count'] / $aCurDate['day']['count']; //write iPercent
-                if ($iPercentRain > $minPercent) {
-                    $countRain++; //count as a rainy day
-                } else if ($iPercentRain > 0) {
-                    $countAlmost++; //not quite rainy enough
-                } // if it's 0, not rainy in the slightest
-                $countTotal++;
-            }
-
+        foreach ($temp as $percent_pop) {
+            $rainPercent = (float)$percent_pop['percent_pop'];
+            //var_dump($rainPercent);
+            if ($rainPercent > $minPercent) {
+                $countRain++; //count as a rainy day
+            } else if ($rainPercent > 0) {
+                $countAlmost++; //not quite rainy enough
+            } // if it's 0, not rainy in the slightest
+            $countTotal++;
+            //}
         }
 
         $aData = array('total' => $countTotal,
@@ -253,32 +251,28 @@ class Wu extends CI_Model
     function percentPOPhour($hoursAdvance, $pop)
     {
         $minPercent = 0.25;
-        //@todo the rain percentage has not been working in aggDate
 
-        $query = 'SELECT datetime ';
+
+        $query = 'SELECT percent_pop ';
         $query .= 'FROM wu_hourly WHERE pop=' . $pop . ' AND forecast_hours=' . $hoursAdvance;
         $temp = $this->db->query($query)->result_array();
         $countRain = 0;
         $countAlmost = 0;
         $countTotal = 0;
 
-        foreach ($temp as $datetime) {
-            $aFullDate = dtBreak($datetime['datetime']);
-
-            $aCurDate = $this->aggDay($aFullDate['date']['full']);
-            $aCurHour = (int)$aFullDate['time']['H'];
-            if ($aCurDate && array_key_exists($aCurHour, $aCurDate['hour'])) { //needed to make sure current day and hour exists in data
-
-                $iPercentRain = $aCurDate['hour'][$aCurHour]['percip']['count'] / $aCurDate['hour'][$aCurHour]['count'];
-                //print_r($iPercentRain);
-                //print_r('<br>');
-                if ($iPercentRain > $minPercent) {
-                    $countRain++; //count as a rainy day
-                } else if ($iPercentRain > 0) {
-                    $countAlmost++; //not quite rainy enough
-                }
-                $countTotal++;
-            }
+        foreach ($temp as $percent_pop) {
+            //$aCurDate = $this->aggDay($date['date']);
+            //if ($aCurDate) {
+            //$iPercentRain = $aCurDate['day']['percip']['count'] / $aCurDate['day']['count']; //write iPercent
+            $rainPercent = (float)$percent_pop['percent_pop'];
+            //var_dump($rainPercent);
+            if ($rainPercent > $minPercent) {
+                $countRain++; //count as a rainy day
+            } else if ($rainPercent > 0) {
+                $countAlmost++; //not quite rainy enough
+            } // if it's 0, not rainy in the slightest
+            $countTotal++;
+            //}
 
         }
 

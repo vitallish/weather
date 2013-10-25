@@ -69,6 +69,7 @@ class WuCron extends CI_Controller
         //goal to combine aggdate to one call for each of the three updateables.
 
         $this->db->where("date < '" . date('Y-m-d') . "' AND (diff_f_low IS NULL OR actual_ids IS NULL OR percent_pop IS NULL)");
+        /*@todo add proper sorting to this bitch */
         $this->db->select('date,diff_f_low,actual_ids,percent_pop');
         $oQuery = $this->db->get('wu_10day');
         /* $aRepeat helps keep track of which dates have already been looked at since they are repeated about 9 times
