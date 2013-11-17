@@ -14,10 +14,11 @@ class Weather extends CI_Controller
     {
         $this->load->helper('form');
         $this->load->helper('url');
-        $aOptions = array('hourly' => 'hourly',
+        $aOptions = array('none' => '',
+            'hourly' => 'hourly',
             'daily' => 'daily');
         $sAttributes = 'id="select_type"';
-        $data['select_type'] = form_dropdown('select_type', $aOptions, '', $sAttributes);
+        $data['select_type'] = form_label("Select either hourly or daily predictions:", 'select_type') . form_dropdown('select_type', $aOptions, '', $sAttributes);
 
         for ($i = 0; $i < 36; $i++) {
             $aOptionsHour[$i] = $i;
@@ -29,13 +30,13 @@ class Weather extends CI_Controller
         $sAttributesPop = 'id = "select_pop"';
         $sAttributesDay = 'id="select_day"';
         $sAttributesHour = 'id="select_hour"';
-        $data['sel_hour'] = form_dropdown('sel_hour', $aOptionsHour, '', $sAttributesHour);
-        $data['sel_day'] = form_dropdown('sel_day', $aOptionsDay, '', $sAttributesDay);
-        $data['sel_pop'] = form_dropdown('sel_pop', $aOptionsPop, '', $sAttributesPop);
+        $data['sel_hour'] = form_label("Select how many hours ahead:", 'select_hour') . form_dropdown('sel_hour', $aOptionsHour, '', $sAttributesHour);
+        $data['sel_day'] = form_label("Select how many days ahead:", 'select_day') . form_dropdown('sel_day', $aOptionsDay, '', $sAttributesDay);
+        $data['sel_pop'] = form_label("Select percent of percipitation:", 'select_pop') . form_dropdown('sel_pop', $aOptionsPop, '', $sAttributesPop);
         $sAttributesData = 'id="select_data"';
         $aOptionsData = array('Temperature' => 'temp',
             'Precipitation' => 'pop');
-        $data['sel_data'] = form_dropdown('sel_data', $aOptionsData, '', $sAttributesData);
+        $data['sel_data'] = form_label("Select details on either POP or Temperature:", 'select_data') . form_dropdown('sel_data', $aOptionsData, '', $sAttributesData);
 
 
         $this->load->view('header_view');

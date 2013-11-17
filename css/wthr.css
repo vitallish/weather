@@ -9,4 +9,34 @@
 div
 {
     clear: both;
+    position: relative;
+    transition: all .5s ease-in-out .2s;
+}
+
+div.rug_Visible {
+    left: 110px;
+
+}
+
+/*div.hidden{
+    left: -500px;
+    }*/
+div.rug_Hidden {
+    left: -500px;
+}
+
+div#sidebar {
+    position: fixed;
+    left: 0px;
+    top: 10px;
+    bottom: 10px;
+    width: 100px;
+    background: #ffffff;
+    transition: all 0.2s ease-in-out;
+
+}
+
+div#sidebar.raised {
+    z-index: 100;
+    box-shadow: 8px 0px 10px 0px;
 }
