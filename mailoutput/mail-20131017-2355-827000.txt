@@ -1,0 +1,17 @@
+To: 4321183@mms.att.net
+Subject: =?utf-8?Q?Email_Test?=
+User-Agent: CodeIgniter
+Date: Fri, 18 Oct 2013 01:55:08 +0200
+From: "Warfish" <warfsih@twonthink.com>
+Return-Path: <warfsih@twonthink.com>
+Reply-To: "warfsih@twonthink.com" <warfsih@twonthink.com>
+X-Sender: warfsih@twonthink.com
+X-Mailer: CodeIgniter
+X-Priority: 3 (Normal)
+Message-ID: <526078ef8aa03@twonthink.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+
+Testing the email class.
+

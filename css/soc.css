@@ -1,0 +1,65 @@
+img {
+    float: left;
+    position: relative;
+    height: 100px;
+    width: 87px;
+    margin-top: -13px;
+    margin-bottom: -13px;
+    z-index: 1;
+}
+
+.row_odd {
+}
+
+.row_even {
+    left: 43px
+}
+
+.start {
+    clear: both;
+}
+
+.border {
+    /*-webkit-transform:rotate(60deg);*/
+    /*
+     transform:rotate(30deg);
+     -ms-transform:rotate(30deg); /* IE 9
+
+     */
+    position: absolute;
+    width: 650px;
+    height: 520px;
+    margin: 15px auto;
+}
+
+body {
+    position: relative;
+    width: 100%
+
+}
+
+.road {
+    position: absolute;
+    height: 44px;
+    width: 10px;
+    z-index: 10;
+    background-color: yellow;
+    box-shadow: 1px 1px 1px 1px;
+}
+
+.forward {
+    -webkit-transform: rotate(60deg);
+}
+
+.backward {
+    -webkit-transform: rotate(120deg);
+}
+
+.settlement {
+    position: absolute;
+    height: 20px;
+    width: 20px;
+    z-index: 11;
+    background-color: green;
+    box-shadow: 1px 1px 1px 1px;
+}

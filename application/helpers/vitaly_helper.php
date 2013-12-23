@@ -36,5 +36,18 @@ if ( ! function_exists('dtBreak'))
 
 
     }
+
+    function expandArray($aArray)
+    {
+        $output = array();
+
+        foreach ($aArray as $type => $count) {
+            for ($i = 0; $i < $count; ++$i) {
+                $output[] = $type;
+            }
+        }
+
+        return $output;
+    }
 }
 

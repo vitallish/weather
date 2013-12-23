@@ -268,19 +268,22 @@ if ((oSelData = document.getElementById('select_data')) != null) {
     document.getElementById('select_pop').onchange = updateWthrStats;
 
 }
-if ((oSideBar = document.getElementById('sidebar')) != null) {
-    var raiseSidebar1 = new CustomEvent("fromBelow", {
-        detail: {
-            rug: oSideBar
-        },
-        bubbles: true,
-        cancelable: true
-    });
+
+/*
+ if ((oSideBar = document.getElementById('sidebar')) != null) {
+ var raiseSidebar1 = new CustomEvent("fromBelow", {
+ detail: {
+ rug: oSideBar
+ },
+ bubbles: true,
+ cancelable: true
+ });
 
 
-    document.addEventListener("fromBelow", raiseandLower, false);
+ document.addEventListener("fromBelow", raiseandLower, false);
 
-}
+ }
+ */
 
 
 

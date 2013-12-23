@@ -44,6 +44,16 @@ class Weather extends CI_Controller
         $this->load->view('footer_view');
     }
 
+    public function predictions()
+    {
+        /*
+            This should make up the calender pick and choose etc. portion of the site.
+            It's main job will first be to allow the user to either pick an hour or date in the future
+
+
+        */
+    }
+
     public function fetchWthrStats()
     {
         /*array $postInput = array(['selData']=>

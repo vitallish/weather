@@ -1,0 +1,17 @@
+To: vdruker@gmail.com
+Subject: =?utf-8?Q?Email_Test?=
+User-Agent: CodeIgniter
+Date: Fri, 18 Oct 2013 01:57:02 +0200
+From: "Warfish" <warfish@twonthink.com>
+Return-Path: <warfish@twonthink.com>
+Reply-To: "warfish@twonthink.com" <warfish@twonthink.com>
+X-Sender: warfish@twonthink.com
+X-Mailer: CodeIgniter
+X-Priority: 3 (Normal)
+Message-ID: <5260794e793bc@twonthink.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+
+Testing the email class.
+
