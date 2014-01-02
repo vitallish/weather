@@ -63,12 +63,17 @@ class Soc extends CI_Model
                     );
                     continue;
 
-                } elseif ($aMap[$countMapArray]['position'] < 0) {
+                } elseif ($aMap[$countMapArray]['position'] < 0) { // It's water!
+                    $adjacent = $aMap[$countMapArray]['adjacent'];
+                    $custom = 'data-adjHex="' . $adjacent . '"';
+
+
                     $data[$r][$c] = array(
                         'id' => 'r' . $r . 'c' . $c,
                         'class' => $class,
                         'type' => 'water',
-                        'src' => 'Hexagon water.png'
+                        'src' => 'Hexagon water.png',
+                        'custom' => $custom
                     );
 
 
@@ -81,30 +86,6 @@ class Soc extends CI_Model
                         ++$countTile;
                     }
                     ++$countHex;
-                    // This is necessary to setup the adjacent in the database
-
-
-                    if (($r % 2) > 0) { //odd row
-                        $adjacent = 'r' . ($r - 1) . 'c' . ($c - 1) . ' ';
-                        $adjacent .= 'r' . ($r - 1) . 'c' . $c . ' ';
-                        $adjacent .= 'r' . $r . 'c' . ($c + 1) . ' ';
-                        $adjacent .= 'r' . ($r + 1) . 'c' . $c . ' ';
-                        $adjacent .= 'r' . ($r + 1) . 'c' . ($c - 1) . ' ';
-                        $adjacent .= 'r' . $r . 'c' . ($c - 1);
-
-                    } else { // even row
-                        $adjacent = 'r' . ($r - 1) . 'c' . $c . ' ';
-                        $adjacent .= 'r' . ($r - 1) . 'c' . ($c + 1) . ' ';
-                        $adjacent .= 'r' . $r . 'c' . ($c + 1) . ' ';
-                        $adjacent .= 'r' . ($r + 1) . 'c' . ($c + 1) . ' ';
-                        $adjacent .= 'r' . ($r + 1) . 'c' . $c . ' ';
-                        $adjacent .= 'r' . $r . 'c' . ($c - 1);
-                    }
-
-                    $this->db->where('id', $aMap[$countMapArray]['id']);
-                    $this->db->update('soc_boardsetup', array('adjacent' => $adjacent));
-
-                    //end of temporary section
 
 
                     $adjacent = $aMap[$countMapArray]['adjacent'];
@@ -121,6 +102,30 @@ class Soc extends CI_Model
                     );
 
                 }
+                /*
+                //This is necessary to setup the adjacent in the database
+                if (($r % 2) > 0) { //odd row
+                    $adjacent = 'r' . ($r - 1) . 'c' . ($c - 1) . ' ';
+                    $adjacent .= 'r' . ($r - 1) . 'c' . $c . ' ';
+                    $adjacent .= 'r' . $r . 'c' . ($c + 1) . ' ';
+                    $adjacent .= 'r' . ($r + 1) . 'c' . $c . ' ';
+                    $adjacent .= 'r' . ($r + 1) . 'c' . ($c - 1) . ' ';
+                    $adjacent .= 'r' . $r . 'c' . ($c - 1);
+
+                } else { // even row
+                    $adjacent = 'r' . ($r - 1) . 'c' . $c . ' ';
+                    $adjacent .= 'r' . ($r - 1) . 'c' . ($c + 1) . ' ';
+                    $adjacent .= 'r' . $r . 'c' . ($c + 1) . ' ';
+                    $adjacent .= 'r' . ($r + 1) . 'c' . ($c + 1) . ' ';
+                    $adjacent .= 'r' . ($r + 1) . 'c' . $c . ' ';
+                    $adjacent .= 'r' . $r . 'c' . ($c - 1);
+                }
+
+                $this->db->where('id', $aMap[$countMapArray]['id']);
+                $this->db->update('soc_boardsetup', array('adjacent' => $adjacent));
+                //end of temporary section
+                */
+
 
                 $countMapArray++;
 

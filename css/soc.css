@@ -11,6 +11,26 @@ img {
 .row_odd {
 }
 
+.right {
+    float: right;
+    width: 300px;
+    z-index: 20;
+
+}
+
+.placemarker {
+    float: left;
+    width: 100px;
+    height: 50px;
+    margin: 10px 20px;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    color: #ffffff;
+    background-color: #000000;
+
+}
+
 .row_even {
     left: 43px
 }
@@ -30,12 +50,12 @@ img {
     width: 650px;
     height: 520px;
     margin: 15px auto;
+
 }
 
 body {
     position: relative;
-    width: 100%
-
+    width: 955px;
 }
 
 .road {
@@ -43,8 +63,10 @@ body {
     height: 44px;
     width: 10px;
     z-index: 10;
-    background-color: yellow;
-    box-shadow: 1px 1px 1px 1px;
+    /*
+    cursor: pointer;
+    background-color: transparent;
+    box-shadow: 1px 1px 1px 1px;*/
 }
 
 .forward {
@@ -57,9 +79,12 @@ body {
 
 .settlement {
     position: absolute;
+
     height: 20px;
     width: 20px;
     z-index: 11;
-    background-color: green;
-    box-shadow: 1px 1px 1px 1px;
+    /*
+    cursor: pointer;
+    background-color: transparent;
+    box-shadow: 1px 1px 1px 1px;*/
 }

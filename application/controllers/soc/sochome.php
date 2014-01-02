@@ -19,6 +19,11 @@ class Sochome extends CI_Controller
 
     public function index()
     {
+        $this->load->helper('url');
+    }
+
+    public function test()
+    {
         $data['nice'] = '';
         $board = $this->soc->board_constuction(1);
 
@@ -28,11 +33,14 @@ class Sochome extends CI_Controller
 
                 $currentTile = $board['data'][$r][$c];
                 $id = $currentTile['id'];
-                $src = "./../images/soc/" . $currentTile['src'];
+                $src = "./../../images/soc/" . $currentTile['src'];
                 $class = $currentTile['class'] . ' ' . $currentTile['type'];
 
                 if ($currentTile['type'] == 'land') {
                     $title = $currentTile['resource'] . ' ' . $currentTile['number'];
+                    $custom = ' ' . $currentTile['custom'] . ' ';
+                } elseif ($currentTile['type'] == 'water') {
+                    $title = $currentTile['type'];
                     $custom = ' ' . $currentTile['custom'] . ' ';
                 } else {
                     $title = $currentTile['type'];
@@ -46,7 +54,7 @@ class Sochome extends CI_Controller
 
         }
 
-        $this->load->view('soc/main_view', $data);
+        $this->load->view('soc/test_view', $data);
 
 
     }
