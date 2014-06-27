@@ -12,14 +12,12 @@ class Soc extends CI_Model
     {
         // Call the Model constructor
         parent::__construct();
-
     }
 
     public function board_constuction($bsid)
     {
         $this->load->helper('vitaly');
-
-        $this->db->select(array('id', 'position', 'row', 'column', 'adjacent'));
+        $this->db->select(array('id', 'position', 'row', 'column', 'adjacent','port_rotation'));
         $this->db->where(array('bs_id' => $bsid));
         $this->db->order_by('row', 'asc');
         $this->db->order_by('column', 'asc');
@@ -66,24 +64,35 @@ class Soc extends CI_Model
                 } elseif ($aMap[$countMapArray]['position'] < 0) { // It's water!
                     $adjacent = $aMap[$countMapArray]['adjacent'];
                     $custom = 'data-adjHex="' . $adjacent . '"';
-
-
+                    if(!is_null($aMap[$countMapArray]['port_rotation'])){
+                        $this->db->select("type");
+                        $this->db->where(array("hex"=>$aMap[$countMapArray]['position']));
+                        $aTemp = $this->db->get("soc_portlocation")->row_array();
+                        $class.=" rotate".$aMap[$countMapArray]['port_rotation'];
+                        $src = 'Hexagon -port.png';
+                        $numberTile = '<div class="portTile port_'.$aTemp['type'].'"></div>';
+                    }else{
+                        $src ='Hexagon water.png';
+                        $numberTile ='';
+                    }
                     $data[$r][$c] = array(
                         'id' => 'r' . $r . 'c' . $c,
                         'class' => $class,
                         'type' => 'water',
-                        'src' => 'Hexagon water.png',
-                        'custom' => $custom
+                        'src' => $src,
+                        'custom' => $custom,
+                        'numberTile' =>$numberTile
                     );
-
 
                 } else { //It's a land card
                     $curHex = $aHex[$countHex];
                     if ($curHex == 'desert') {
                         $curTile = '0';
+                        $numberTile ='';
                     } else {
                         $curTile = $aTile[$countTile];
                         ++$countTile;
+                        $numberTile = '<div class="numberTile">'.$curTile.'</div>';
                     }
                     ++$countHex;
 
@@ -95,10 +104,11 @@ class Soc extends CI_Model
                         'id' => 'r' . $r . 'c' . $c,
                         'class' => $class,
                         'type' => 'land',
-                        'src' => 'Hexagon land.png',
+                        'src' => 'Hexagon -'.$curHex.'.png',
                         'resource' => $curHex,
                         'number' => $curTile,
-                        'custom' => $custom
+                        'custom' => $custom,
+                        'numberTile' =>$numberTile
                     );
 
                 }

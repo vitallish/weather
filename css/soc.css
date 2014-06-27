@@ -1,4 +1,4 @@
-img {
+.hexTile {
     float: left;
     position: relative;
     height: 100px;
@@ -7,6 +7,30 @@ img {
     margin-bottom: -13px;
     z-index: 1;
 }
+.hexResource{
+    /*float: left;*/
+    /*position: relative;*/
+    height: 100px;
+    width: 87px;
+    z-index: 1;
+}
+.numberTile{
+    z-index: 5;
+    position: relative;
+    top: -68px;
+    left: 31px;
+    border-radius: 50%;
+    width:25px;
+    height:25px;
+    background: #ccc595;
+    border: 1px solid #000;
+    text-align: center;
+    vertical-align: middle;
+    display: table-cell;
+}
+
+
+
 
 .row_odd {
 }
@@ -87,4 +111,66 @@ body {
     cursor: pointer;
     background-color: transparent;
     box-shadow: 1px 1px 1px 1px;*/
+}
+
+.rotate180{
+    transform:rotate(180deg);
+    -ms-transform:rotate(180deg); /* IE 9 */
+    -webkit-transform:rotate(180deg); /* Opera, Chrome, and Safari */
+}
+.rotate60{
+    transform:rotate(60deg);
+    -ms-transform:rotate(60deg); /* IE 9 */
+    -webkit-transform:rotate(60deg); /* Opera, Chrome, and Safari */
+}
+.rotate120{
+    transform:rotate(120deg);
+    -ms-transform:rotate(120deg); /* IE 9 */
+    -webkit-transform:rotate(120deg); /* Opera, Chrome, and Safari */
+}
+.rotate240{
+    transform:rotate(240deg);
+    -ms-transform:rotate(240deg); /* IE 9 */
+    -webkit-transform:rotate(240deg); /* Opera, Chrome, and Safari */
+}
+.rotate300{
+    transform:rotate(300deg);
+    -ms-transform:rotate(300deg); /* IE 9 */
+    -webkit-transform:rotate(300deg); /* Opera, Chrome, and Safari */
+}
+.port_sheep{
+    background-image: url("./../images/soc/sheep.jpg") !important;
+    border: 1px solid white;
+}
+.port_wood{
+    background-image: url("./../images/soc/wood.jpg") !important;
+    border: 1px solid green;
+}
+.port_ore{
+    background-image: url("./../images/soc/ore.jpg") !important;
+    border: 1px solid grey;
+}
+.port_brick{
+    background-image: url("./../images/soc/brick.jpg")!important;
+    border: 1px solid red;
+}
+.port_wheat{
+    background-image: url("./../images/soc/wheat.jpg") !important;
+    border: 1px solid yellow;
+}
+.port_three{
+    background-image: url("./../images/soc/three.jpg") !important;
+    border: 1px solid #000000;
+}
+.portTile{
+    z-index: 5;
+    position: relative;
+    top: -68px;
+    left: 31px;
+    width:25px;
+    height:25px;
+    text-align: center;
+    vertical-align: middle;
+    display: table-cell;
+
 }
